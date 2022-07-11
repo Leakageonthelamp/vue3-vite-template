@@ -1,11 +1,16 @@
 <template>
   <section class="homepage-view">
-    <button @click="addMockItems">Add Items</button>
+    <button class="btn" @click="addMockItems">Add Items</button>
     <div class="store-section">
       <div v-for="(item, index) in items" :key="index" class="item">
         <div>{{ item.id }} | {{ item.name }} | {{ item.description }}</div>
-        <button @click="deleteItem(item.id)">Remove</button>
-        <button class="ml-2" @click="updateItem(item.id)">Update</button>
+        <button class="btn" @click="deleteItem(item.id)">Remove</button>
+        <button class="ml-2 btn" @click="updateItem(item.id)">Update</button>
+      </div>
+    </div>
+    <div class="api-section">
+      <div v-for="(data, index) in dataArray" :key="index">
+        <code>{{ data }}</code>
       </div>
     </div>
   </section>
@@ -15,16 +20,27 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { generateFakeData, Item } from '@/models/item.model'
 import { useMainStore } from '@/store'
+import testService from '@/api/test.service'
 
 export default defineComponent({
   setup() {
     const items = ref<Item[]>([])
     const mainStore = useMainStore()
 
+    const dataArray = ref([])
+
     onMounted(() => {
       items.value = mainStore.items
+      fetchMockData()
     })
 
+    // Api Call
+    const fetchMockData = async () => {
+      const result = await testService.getMockData()
+      dataArray.value = result.data
+    }
+
+    // Store Call
     const addMockItems = () => {
       mainStore.setNewItems(generateFakeData())
     }
@@ -35,7 +51,7 @@ export default defineComponent({
       mainStore.updateItem(id, generateFakeData())
     }
 
-    return { items, addMockItems, deleteItem, updateItem }
+    return { items, addMockItems, deleteItem, updateItem, dataArray }
   },
 })
 </script>
@@ -49,9 +65,11 @@ export default defineComponent({
       @apply bg-gray-300 p-2 rounded-lg w-fit;
     }
   }
-}
 
-button {
-  @apply p-2 text-white rounded-lg bg-slate-500;
+  .api-section {
+    code {
+      @apply bg-gray-300 p-1.5 text-xs rounded-lg;
+    }
+  }
 }
 </style>
