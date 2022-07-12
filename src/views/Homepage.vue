@@ -1,6 +1,11 @@
 <template>
   <section class="homepage-view">
+    <div class="header-title">hooks | store | api</div>
     <button class="btn" @click="addMockItems">Add Items</button>
+    <div class="hook-section">
+      {{ isLoading }} |
+      <button class="btn" @click="toggleIsLoading">Toggle</button>
+    </div>
     <div class="store-section">
       <div v-for="(item, index) in items" :key="index" class="item">
         <div>{{ item.id }} | {{ item.name }} | {{ item.description }}</div>
@@ -20,6 +25,7 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { generateFakeData, Item } from '@/models/item.model'
 import { useMainStore } from '@/store'
+import useIsLoading from '@/hooks/use-isloading'
 import testService from '@/api/test.service'
 
 export default defineComponent({
@@ -51,7 +57,17 @@ export default defineComponent({
       mainStore.updateItem(id, generateFakeData())
     }
 
-    return { items, addMockItems, deleteItem, updateItem, dataArray }
+    const { isLoading, toggleIsLoading } = useIsLoading()
+
+    return {
+      items,
+      addMockItems,
+      deleteItem,
+      updateItem,
+      dataArray,
+      isLoading,
+      toggleIsLoading,
+    }
   },
 })
 </script>
@@ -59,6 +75,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .homepage-view {
   @apply container mx-auto px-4 mt-10;
+
+  .hook-section {
+    @apply my-4;
+  }
+
   .store-section {
     @apply my-6 flex flex-col gap-4;
     .item {
