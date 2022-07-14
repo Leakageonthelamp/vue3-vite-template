@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "isolatedModules": false,
     "sourceMap": true,
     "baseUrl": ".",
@@ -23,14 +24,17 @@
       "dom.iterable",
       "scripthost"
     ],
+    "types": [
+      "vitest/globals",
+      "cypress"
+    ]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "cypress.d.ts"
   ],
   "exclude": [
     "node_modules",
