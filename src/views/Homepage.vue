@@ -25,7 +25,7 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { generateFakeData, Item } from '@/models/item.model'
 import { useMainStore } from '@/store'
-import useIsLoading from '@/hooks/use-isloading'
+import useIsLoading from '@/composables/use-isloading'
 import testService from '@/api/test.service'
 
 export default defineComponent({
